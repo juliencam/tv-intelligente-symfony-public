@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chaînes youtube{% endblock %}
+
+{% block subnav %}
+    {% include 'partials/sub_nav_category_channel_youtube.html.twig' %}
+{% endblock %}
+
+{% block body %}
+
+ <!-- si le varaible de resultat de recherche est défini j'affiche les youtbeur de la recherche -->
+
+    {% for post in categoryPosts.posts %}
+        <div class="col-12 col-lg-6 pt-5">
+            <a class= "m-auto d-block card-post_a" target="_blank" href="{{ post.youtuber.urlchanel }}">
+                <div class="card div_card_border">
+                    <div class="card-body">
+                        <p class="card-title card-post_p_title fw-bold">{{ "Youtuber : " ~ post.youtuber.name }}</p>
+                        <p class="card-text card-post_p_date fw-lighter">{{ "Publié le : " ~ post.youtuber.createdAt|date("d/m/Y") }}</p>
+                    </div>
+
+                    {% if post.youtuber.uriimage == null %}
+                        {% set imageUrl =  'assets/images/youtuber/img-default-youtube-chanel.png' %}
+                        <img class="imgSize" src="{{ asset(imageUrl) | imagine_filter('miniature') }}">
+                    {% else %}
+                        {% set imageUrl =  'assets/images/youtuber/' ~ post.youtuber.uriimage %}
+                        <img class="imgSize" src="{{ asset(imageUrl) | imagine_filter('miniature') }}">
+                    {% endif %}
+                </div>
+            </a>
+        </div>
+
+    {% endfor %}
+    <div class="d-flex justify-content-center mt-5">
+        {{ knp_pagination_render(categoryPosts.posts, 'pagination.html.twig') }}
+    </div>
+
+{% endblock %}

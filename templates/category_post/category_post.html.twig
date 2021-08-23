@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégories{% endblock %}
+
+{% block subnav %}
+    {% include 'partials/sub_nav_category_posts.html.twig' %}
+{% endblock %}
+
+{% block body %}
+
+
+    {% for post in categoryPosts.posts %}
+
+        <div class="col-12 col-lg-4 mt-5">
+            <a class= "m-auto d-block card-post_a" href="{{ path('article_category', {'id':post.id}) }}">
+
+                <div class="card div_card_border">
+                    <div class="jumbotron">
+                        <div class="noncliquable"></div>
+                            {{ post.iframe|raw }}
+                    </div>
+                    <div class="card-body">
+                        <p class="card-title card-post_p_title fw-bold">{{ post.title }}</p>
+                        <p class="card-text card-post_p_youtuber fw-lighter">{{ "Youtuber : " ~ post.youtuber.name }}</p>
+                        <p class="card-text card-post_p_date fw-lighter">{{ "Publié le : " ~ post.createdAt|date("d/m/Y") }}</p>
+                        <p class="card-text card-post_p_tag">
+                            {{ "Tag : "  }}
+                            {% for tag in post.tags %}
+
+                                {{ tag.name }}
+
+                            {% endfor %}
+                        </p>
+                        <i class="far fa-thumbs-up card-post_i_icon-like"></i>
+                        <span class="card-post_span_nbre-like">{{ post.postLikes|length }}</span>
+
+                        {# <i class="fas fa-thumbs-up"></i> #}
+                    </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+
+
+    <div class="d-flex justify-content-center mt-5">
+        {{ knp_pagination_render(categoryPosts.posts, 'pagination.html.twig') }}
+    </div>
+
+
+
+
+
+
+<!-- <template id="card-post-template">
+
+    <div class="col-12 col-lg-6 pt-5">
+        <a class= "m-auto d-block card-post_a" href="">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title card-post_p_title"></p>
+                    <p class="card-text card-post_p_youtuber"></p>
+                    <p class="card-text card-post_p_category"></p>
+                    <p class="card-text card-post_p_date"></p>
+                </div>
+                <img src="" class="card-img-top card-post_p_image" alt="...">
+                <div class="card-body">
+                    <p class="card-text card-post_p_tag"></p>
+                    <i class="far fa-thumbs-up card-post_i_icon-like"></i>
+                    <span class="card-post_span_nbre-like"></span> -->
+    
+                    {# <i class="fas fa-thumbs-up"></i> #}
+                <!-- </div>
+            </div>
+        </a>
+    </div>
+
+</template>
+
+    <div class="card-post row justify-content-around">
+
+    </div> -->
+
+    <script src="https://kit.fontawesome.com/e1615367d2.js" crossorigin="anonymous"></script>
+{% endblock %}

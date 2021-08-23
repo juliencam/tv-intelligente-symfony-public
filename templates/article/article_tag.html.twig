@@ -1,0 +1,203 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+
+{% block body %}
+
+<div class="col-xl-2 col-lg-3 col-12 pt-0 pt-lg-5 pb-5 sticky-top">
+
+    {% include 'partials/nav_tag_posts.html.twig' %}
+
+</div>
+
+
+<div class="col-xl-10 col-lg-9 col-md-12 col-12 pt-5 pb-5">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-12 col-lg-6">
+                <div class="article_iframe_size">
+
+                    {{ post.iframe|raw }}
+        
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <h2 class="">{{ post.title }}</h2>
+                <p class="fw-lighter">{{ "Publié le : " ~ post.createdAt|date("d/m/Y") }}</p>
+                <p class="card-post_p_category">
+
+                    {% if post.categories|length is same as(1) %}
+                            {{ "Categorie : " }}
+                    {% else %}
+                            {{ "Categories : " }}
+                    {% endif %}
+    
+                    {% for category in post.categories %}
+                        <a class= "link" href="{{ path('category_post', {'id':category.id}) }}">{{ category.name }}</a>
+                    {% endfor %}
+    
+                </p>
+
+
+                <p class="card-post_p_tag">
+                    {% if post.tags|length is same as(1) %}
+                        {{ "Tag : " }}
+                    {% else %}
+                        {{ "Tags : " }}
+                    {% endif %}
+    
+                    {% for tag in post.tags %}
+    
+                        <a class= "link" href="{{ path('tag_post', {'id':tag.id}) }}">{{ tag.name }}</a>
+    
+                    {% endfor %}
+                </p>
+                <div>
+       
+                    <a class="js-button-like" href="{{ path('article_postlike', {'id' : post.id}) }}">
+
+                        {% if app.user and postObject.isLikedByUser(app.user) %}
+
+                            <i class="fas fa-thumbs-up"></i>
+
+                        {% else %}
+
+                            <i class="far fa-thumbs-up"></i>
+
+                        {% endif %}
+
+
+                    </a>
+                    <span class="js-nbr-like">{{ post.postLikes|length }}</span>
+                </div>
+            </div>
+            <div class="col-12 d-flex flex-column justify-content-center align-items-center my-5">
+                <h1>{{ post.youtuber.name }}</h1>
+                <p class="card-post_p_youtuber">
+                    <a href="{{ post.youtuber.urlchanel }}"
+                       class="btn btn-danger btn-lg" target="_blank" role="button">
+                       Chaîne Youtube
+                    </a>
+                </p>
+            </div>
+
+            <div class="col-12 col-lg-8"> 
+                <form class="js-form-article" method="GET" action="{{ path('article_postcomment', {'postId':post.id}) }}">
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Commentaires</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="content-comment"></textarea>
+                    </div>
+                    <button type="submit" class="btn form_button_background-color form_element_border">Publier</button>
+                </form>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="js-div-comments">
+                    {% for comment in comments %}
+                        <div class="col-12 pt-5 js-div-comment
+                        {% if app.user and comment.isCommentedByUser(app.user) %}
+                        {{ "bg-light" }}
+                        {% endif %} ">
+                            <div class="d-flex flex-row mb-1">
+                                <p class="fw-bold"> {{ comment.user.pseudonym }} &nbsp;</p>
+                                <p class="fw-lighter">{{ " publié le : " ~ comment.createdAt|format_datetime('short', 'short', locale='fr') }}</p>
+                            </div>
+                            <div class="js-div-comment-content">
+                                <p class="js-comment-content">{{ comment.content }}</p>
+                            </div>
+
+                            {% if app.user and comment.isCommentedByUser(app.user) %}
+
+                                <div class="d-flex flex-row mb-1 js-button-edit-delete" >
+                                    <a class="icon_a_margin js-comment-button-edit btn btn-sm"
+                                       href="{{ path('article_editcomment', {'postId':post.id, 'commentId':comment.id }) }}" >
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+    
+                                    <form class="js-comment-form-delete" method="post"
+                                           action="{{ path('article_deletecomment', {'commentId': comment.id}) }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input  type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                        <button class="btn btn-sm js-comment-button-delete" type="submit"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </div>
+
+                            {% endif %}
+
+
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'partials/template_tooltip.html.twig' %}
+<template id="div-comment-edit-template">
+
+    <form class="js-form-edit-comment" data-id-post="">
+        <div class="mb-3">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <button class="btn form_button_background-color form_element_border js-button-register" type="submit" class="btn btn-primary">Enregistrer</button>
+        <button class="btn form_button_background-color form_element_border js-button-cancel"type="submit" class="btn btn-primary">Annuler</button>
+    </form>
+
+
+</template>
+
+<template id="div-comment-template">
+
+    <div class="col-12 js-div-comment bg-light">
+        <div class="d-flex flex-row mb-1">
+            <p class="fw-bold js-comment-user-pseudonym"> </p>
+            <p class="fw-lighter js-comment-date"></p>
+        </div>
+        <div class="js-div-comment-content">
+            <p class="js-comment-content"></p>
+        </div>
+    </div>
+
+</template>
+
+<template id="div-comment-post-template">
+
+    <div class="col-12 pt-5 js-div-comment bg-light">
+
+
+        <div class="d-flex flex-row mb-1">
+            <p class="fw-bold js-comment-user-pseudonym"> </p>
+            <p class="fw-lighter js-comment-date"></p>
+        </div>
+        <div class="js-div-comment-content">
+            <p class="js-comment-content"></p>
+        </div>
+
+
+        <div class="d-flex flex-row mb-1 js-button-edit-delete" >
+            <a class="icon_a_margin js-comment-button-edit btn btn-sm"
+            href="" >
+                <i class="fas fa-edit"></i>
+            </a>
+
+            <form class="js-comment-form-delete" method="post"
+                action="">
+                <input type="hidden" name="_method" value="DELETE">
+                <input class="token-comment" type="hidden" name="_token" value="">
+                <button class="btn btn-sm js-comment-button-delete" type="submit"><i class="fas fa-trash-alt"></i></button>
+            </form>
+        </div>
+
+    </div>
+
+</template>
+
+<script src="https://kit.fontawesome.com/e1615367d2.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/assets/js/like.js"></script>
+<script src="/assets/js/commentPost.js"></script>
+<script src="/assets/js/commentEdit.js"></script>
+<script src="/assets/js/commentDelete.js"></script>
+{% endblock %}

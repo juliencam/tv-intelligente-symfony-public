@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace utilisateur{% endblock %}
+
+{% block body %}
+
+<section class="bg-light text-center mb-5">
+    <div class="container">
+        <p class="h1">Mes informations</p>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto mb-5">
+                    {{ form_start(formUserInformationEmail) }}
+                        {% for message in app.flashes('success-information') %}
+                            <div class="alert alert-success">
+                                    {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes('error-information-email') %}
+                            <div class="alert alert-danger">
+                                    {{ message }}
+                            </div>
+                        {% endfor %}
+                        <div class="form-control mt-5">
+                            {{ form_errors(formUserInformationEmail.email) }}
+                            {{ form_label(formUserInformationEmail.email)}}
+                            {{ form_widget(formUserInformationEmail.email, {'attr': {'value': app.user.email}}) }}
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-5">
+                            {{ form_row(formUserInformationEmail.send, {'attr': {'class': 'form_button_background-color'}}) }} 
+                          </div>
+                    {{ form_end(formUserInformationEmail) }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<section class="bg-light text-center mb-5">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto mb-5">
+
+                    {{ form_start(formUserInformationPseudonym) }}
+                        {% for message in app.flashes('success-information-pseudonym') %}
+                            <div class="alert alert-success">
+                                    {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes('error-information-pseudonym') %}
+                            <div class="alert alert-danger">
+                                    {{ message }}
+                            </div>
+                        {% endfor %}
+                        <div class="form-control mt-5">
+                            {{ form_errors(formUserInformationPseudonym.pseudonym) }}
+                            {{ form_label(formUserInformationPseudonym.pseudonym)}}
+                            {{ form_widget(formUserInformationPseudonym.pseudonym, {'attr': {'value': app.user.pseudonym}}) }}
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-5">
+                            {{ form_row(formUserInformationPseudonym.send, {'attr': {'class': 'form_button_background-color'}}) }} 
+                          </div>
+                    {{ form_end(formUserInformationPseudonym) }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<section class="bg-light text-center mb-5">
+    <div class="container">
+        <p class="h1">Mot de passe</p>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto mb-5">
+                    {{ form_start(formUserPassword) }}
+                        {% for message in app.flashes('success-password') %}
+                            <div class="alert alert-success">
+                                    {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes('error-password') %}
+                            <div class="alert alert-danger">
+                                    {{ message }}
+                            </div>
+                        {% endfor %}
+                        <div class="form-control mt-5">
+                            {{ form_errors(formUserPassword.plainPassword) }}
+                            {{ form_widget(formUserPassword.plainPassword) }}
+                        </div>
+
+                        <div class="form-control mt-5">
+                            {{ form_errors(formUserPassword.passwordVerify) }}
+                            {{ form_widget(formUserPassword.passwordVerify) }}
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-5">
+                            {{ form_row(formUserPassword.send, {'attr': {'class': 'form_button_background-color'}}) }}
+                          </div>
+                    {{ form_end(formUserPassword) }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<section class="bg-light text-center mb-5">
+    <div class="container">
+        <p class="h1 text-danger">Suppression de compte </p>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mx-auto mb-5">
+                   <p>Action irréversible.</p>
+                   <p>Supprimer le compte et toutes les informations associées à ce compte</p>
+                   {{ form_start(formUserRemove, {'attr': {'class': 'js-form-user-remove'}})  }}
+                        <div class="d-flex justify-content-center mt-5">
+                            {{ form_row(formUserRemove.send, {'attr': {'class': 'btn-danger'}}) }}
+                          </div>
+                    {{ form_end(formUserRemove) }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<script src="/assets/js/userDelete.js"></script>
+
+{% endblock %}

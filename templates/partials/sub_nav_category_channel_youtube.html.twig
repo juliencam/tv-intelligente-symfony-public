@@ -1,0 +1,68 @@
+<div class="container sticky-top">
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+      <a class="navbar-brand" href="#"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="container">
+
+            <div class="row">
+  
+              <div class="col-lg-10">
+                <ul class="navbar-nav category_menu">
+                  {% for category in categories %}
+                    <li class="nav-item p-2">
+                      <a class="nav-link nav_a_text
+                         {% if (app.request.get('_route') in ['category_channel_youtube']) and (category.id in [app.request.attributes.get('id')])  %}
+                          {{ 'nav_a_active' }}
+                         {% endif %}"
+                         href="{{ path('category_channel_youtube', {'id':category.id}) }}"> 
+                          {{ category.name }}
+                        </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+  
+              {% if (app.request.attributes.get("_route") not in ["home", "article_category",'article_tag', "channel_youtube"]) and (boolSortByDate) %}
+
+                <div class="col-lg-2">
+                  <div class="dropdown">
+                    <button class="btn form_button_background-color dropdown-toggle form_element_border" type="button" id="dropdownMenuButton1" 
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                      Filtrer par date
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+                      {{ form_start(filter) }}
+
+
+                                {{ form_row(filter.date) }}
+
+                              <div class="d-flex justify-content-center">
+                                {{ form_row(filter.search, {'attr': {'class': 'form_button_background-color'}}) }} 
+                              </div>
+  
+
+    
+                      {{ form_end(filter) }}
+
+                    </div>
+                  </div>
+                </div>
+
+              {% endif %}
+
+          </div>
+  
+        </div>
+
+      </div>
+
+  </nav>
+
+</div>

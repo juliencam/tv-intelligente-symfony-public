@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche{% endblock %}
+
+{% block body %}
+
+    {% if (boolFormIsSubmit) %}
+
+        <div class="col-lg-2 col-4 pt-5">
+
+            {% include 'partials/nav_tag_posts.html.twig' %}
+
+        </div>
+
+
+
+        <div class="col-lg-10 col-8">
+            <div class="row">
+
+                {% for post in tagPost.posts %}
+                    <div class="col-12 col-lg-6 pt-5">
+                        <a class= "m-auto d-block card-post_a card-post_a" href="{{ path('article_tag', {'id':post.id}) }}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p class="card-title card-post_p_title">{{ post.title }}</p>
+                                    <p class="card-text card-post_p_youtuber">{{ "Youtuber : " ~ post.youtuber.name }}</p>
+                                    <p class="card-text card-post_p_category">{{ "Categorie : " ~ post.categories[0].name }}</p>
+                                    <p class="card-text card-post_p_date">{{ "Publié le : " ~ post.createdAt|date("d/m/Y") }}</p>
+                                </div>
+                                <div class="jumbotron">
+                                    <div class="noncliquable"></div>
+                                        {{ post.iframe|raw }}
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text card-post_p_tag">
+                                        {{ "Tag : " ~ post.tags[0].name  }}
+                                    </p>
+                                    <i class="far fa-thumbs-up card-post_i_icon-like"></i>
+                                    <span class="card-post_span_nbre-like">{{ post.postLikes|length }}</span>
+                
+                                    {# <i class="fas fa-thumbs-up"></i> #}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            {{ knp_pagination_render(tagPost.posts) }}
+        </div>
+
+    {% endif %}
+
+    <script src="https://kit.fontawesome.com/e1615367d2.js" crossorigin="anonymous"></script>
+
+{% endblock %}

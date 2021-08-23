@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Proposer vidéo youtube{% endblock %}
+
+{% block body %}
+    <!-- Icons Grid -->
+    <div class="m-5">
+        {{ include('composant/flash_messages.html.twig') }}
+    </div>
+
+    <section class="features-icons bg-light text-center">
+        <div class="container">
+            <h1>Proposer une vidéo Youtube</h1>
+            <p>Nous recherchons des vidéos faites par des youtubeurs qui proposent du contenu intelligent. 
+                Il faut que les chaînes aient déjà au moins quelques vidéos ou que le youtubeur soit actif 
+                pour que du contenu soit proposé par le youtubeur régulièrement.</p>
+            <p>Après validation par l'administrateur, la vidéo sera postée sur le site ainsi qu'un lien vers la chaîne youtube</p>
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="mx-auto mb-5">
+                        {{ form_start(formContact) }}
+
+                            <div class="form-control mt-5">
+                                {{ form_row(formContact.name) }}
+                            </div>
+
+                            <div class="form-control mt-5">
+                                {{ form_row(formContact.link) }}
+                            </div>
+
+                            <div class="form-control mt-5">
+                                {{ form_row(formContact.description) }}
+                            </div>
+
+                            <div class="d-flex justify-content-center mt-5">
+                                {{ form_row(formContact.send, {'attr': {'class': 'form_button_background-color'}}) }} 
+                              </div>
+                        {{ form_end(formContact) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
